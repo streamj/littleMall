@@ -9,14 +9,17 @@ import org.slf4j.LoggerFactory;
 import java.util.concurrent.TimeUnit;
 
 /**
- * 使用 Guava 做的 TokenCache
+ * 使用 Guava 做的 user Token Cache
+ * 主要用于重设密码之类的操作，防止横向越权
+ * 在集群里就没卵用了
+ * 可以删除了，这里留作纪念吧
  * @author StReaM on 2/27/2018
  */
 public class TokenCache {
 
     private static Logger logger = LoggerFactory.getLogger(TokenCache.class);
 
-    public static final String TOKEN_PREFIX = "token_";
+//    public static final String TOKEN_PREFIX = "token_";
 
     private static LoadingCache<String, String> localCache = CacheBuilder.newBuilder()
             // todo 这里会吃屎，吃屎 google，吃屎 guava

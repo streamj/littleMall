@@ -19,6 +19,8 @@ public class Const {
 
     public final static String IMAGE_HOST_PREFIX_DEF = "http://image.imoocfake.com/";
 
+    public static final String TOKEN_PREFIX = "token_";
+
     /**
      * 这么写，既是常量，又比枚举轻
      */

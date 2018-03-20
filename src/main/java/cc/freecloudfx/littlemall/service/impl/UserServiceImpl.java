@@ -2,16 +2,18 @@ package cc.freecloudfx.littlemall.service.impl;
 
 import cc.freecloudfx.littlemall.common.Const;
 import cc.freecloudfx.littlemall.common.ServerResponse;
-import cc.freecloudfx.littlemall.common.TokenCache;
 import cc.freecloudfx.littlemall.dao.UserMapper;
 import cc.freecloudfx.littlemall.pojo.User;
 import cc.freecloudfx.littlemall.service.IUserService;
 import cc.freecloudfx.littlemall.util.MD5Util;
+import cc.freecloudfx.littlemall.util.RedisPoolUtil;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.UUID;
+
+import static cc.freecloudfx.littlemall.common.Const.TOKEN_PREFIX;
 
 /**
  * @author StReaM on 2/24/2018
@@ -107,8 +109,8 @@ public class UserServiceImpl implements IUserService {
         int resultCount = userMapper.checkAnswer(username, question, answer);
         if (resultCount > 0) {
             String forgetToken = UUID.randomUUID().toString();
-            TokenCache.setKey(TokenCache.TOKEN_PREFIX + username, forgetToken);
-
+//            TokenCache.setKey(TokenCache.TOKEN_PREFIX + username, forgetToken);
+            RedisPoolUtil.setEx(TOKEN_PREFIX, 60*60*12,forgetToken);
             return ServerResponse.createBySuccess(forgetToken);
         }
         return ServerResponse.createByErrorMessage("问题答案错误");
@@ -126,7 +128,8 @@ public class UserServiceImpl implements IUserService {
             return ServerResponse.createByErrorMessage("用户不存在");
         }
 
-        String token = TokenCache.getKey(TokenCache.TOKEN_PREFIX  + username);
+//        String token = TokenCache.getKey(TokenCache.TOKEN_PREFIX  + username);
+        String token = RedisPoolUtil.get(TOKEN_PREFIX  + username);
         if (StringUtils.isBlank(token)) {
             return ServerResponse.createByErrorMessage("token 无效或者过期");
         }
