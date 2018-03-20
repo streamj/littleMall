@@ -3,8 +3,7 @@ package cc.freecloudfx.littlemall.service.impl;
 import cc.freecloudfx.littlemall.service.IFileService;
 import cc.freecloudfx.littlemall.util.FTPUtil;
 import com.google.common.collect.Lists;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -16,16 +15,16 @@ import java.util.UUID;
  * @author StReaM on 3/11/2018
  */
 @Service("iFileService")
+@Slf4j
 public class FileServiceImpl implements IFileService {
 
-    private Logger logger = LoggerFactory.getLogger(FileServiceImpl.class);
 
     @Override
     public String upload(MultipartFile file, String path) {
         String fileName = file.getOriginalFilename();
         String postfix = fileName.substring(fileName.lastIndexOf(".") + 1);
         String uploadFileName = UUID.randomUUID().toString() + "." + postfix;
-        logger.info("开始上传文件， 文件名: {}, 上传的路径: {}, 新文件名: {}", fileName, path, uploadFileName);
+        log.info("开始上传文件， 文件名: {}, 上传的路径: {}, 新文件名: {}", fileName, path, uploadFileName);
 
         File fileDir = new File(path);
         if (!fileDir.exists()) {
@@ -42,7 +41,7 @@ public class FileServiceImpl implements IFileService {
             // todo delete after uploading
             targetFile.delete();
         } catch (IOException e) {
-            logger.error("上传文件异常", e);
+            log.error("上传文件异常", e);
             return null;
         }
         return targetFile.getName();

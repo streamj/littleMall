@@ -29,7 +29,6 @@ public class UserServiceImpl implements IUserService {
         return ServerResponse.createByError();
     }
 
-
     @Override
     public ServerResponse<User> login(String username, String password) {
         int resultCount = userMapper.checkUsername(username);

@@ -1,6 +1,6 @@
 <html>
 <body>
-<h2>Hello World!</h2>
+<h2>Tomcat Cluster</h2>
 
 Spring MVC upload
 

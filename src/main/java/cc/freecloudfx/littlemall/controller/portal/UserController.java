@@ -5,12 +5,17 @@ import cc.freecloudfx.littlemall.common.ResponseCode;
 import cc.freecloudfx.littlemall.common.ServerResponse;
 import cc.freecloudfx.littlemall.pojo.User;
 import cc.freecloudfx.littlemall.service.IUserService;
+import cc.freecloudfx.littlemall.util.CookieUtil;
+import cc.freecloudfx.littlemall.util.JsonUtil;
+import cc.freecloudfx.littlemall.util.RedisPoolUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
 /**
@@ -31,11 +36,22 @@ public class UserController {
      */
     @RequestMapping(value = "login.do", method = RequestMethod.POST)
     @ResponseBody() /*返回值自动使用 Jackson 序列化*/
-    public ServerResponse<User> login(String username, String password, HttpSession session) {
+    public ServerResponse<User> login(String username, String password,
+                                      HttpSession session, HttpServletResponse servletResponse,
+                                      HttpServletRequest servletRequest) {
         // service -> mybatis -> dao
         ServerResponse<User> response = iUserService.login(username, password);
         if (response.isSuccess()) {
-            session.setAttribute(Const.CURRENT_USER, response.getData()); // data 里是什么呢? 是他妈User 啊
+//            session.setAttribute(Const.CURRENT_USER, response.getData()); // data 里是什么呢? 是他妈User 啊
+            // in cluster environment instead of using session, we use redis
+            // C5121D30C35E1DAF31AC94024EE6E0CA
+            CookieUtil.writeLoginToken(servletResponse, session.getId());
+            CookieUtil.readLoginToken(servletRequest);
+            CookieUtil.deleteLoginToken(servletRequest, servletResponse);
+
+            RedisPoolUtil.setEx(session.getId(), Const.RedisCacheTime.REDIS_SESSION_TIME,
+                    JsonUtil.obj2String(response.getData()));
+
         }
         return response;
     }
