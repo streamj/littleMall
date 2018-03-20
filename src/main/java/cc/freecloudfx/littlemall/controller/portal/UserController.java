@@ -59,6 +59,7 @@ public class UserController {
     @ResponseBody()
     public ServerResponse<String> logout(HttpServletRequest servletRequest, HttpServletResponse servletResponse) {
 //        session.removeAttribute(Const.CURRENT_USER);
+        // 这不对吧，这样不就是 logout 无限次？可能需要前端去处理这个逻辑了
         String loginToken = CookieUtil.readLoginToken(servletRequest);
         CookieUtil.deleteLoginToken(servletRequest, servletResponse);
         RedisPoolUtil.del(loginToken);

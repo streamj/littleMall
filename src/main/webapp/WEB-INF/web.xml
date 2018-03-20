@@ -25,6 +25,17 @@
         <url-pattern>/*</url-pattern>
     </filter-mapping>
 
+    <!--重置 session 时间的 filter, 拦截所有以 do 结尾的请求-->
+    <filter>
+        <filter-name>sessionExpireFilter</filter-name>
+        <filter-class>cc.freecloudfx.littlemall.controller.common.SessionExpireFilter</filter-class>
+    </filter>
+
+    <filter-mapping>
+        <filter-name>sessionExpireFilter</filter-name>
+        <url-pattern>*.do</url-pattern>
+    </filter-mapping>
+
     <!--监听器，监听 web 容器启动和关闭-->
     <listener>
         <listener-class>org.springframework.web.context.request.RequestContextListener</listener-class>
