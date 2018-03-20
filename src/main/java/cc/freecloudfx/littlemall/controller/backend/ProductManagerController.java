@@ -1,6 +1,5 @@
 package cc.freecloudfx.littlemall.controller.backend;
 
-import cc.freecloudfx.littlemall.common.Const;
 import cc.freecloudfx.littlemall.common.ResponseCode;
 import cc.freecloudfx.littlemall.common.ServerResponse;
 import cc.freecloudfx.littlemall.pojo.Product;
@@ -23,7 +22,6 @@ import org.springframework.web.multipart.MultipartFile;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import javax.servlet.http.HttpSession;
 import java.util.Map;
 
 /**
@@ -44,7 +42,7 @@ public class ProductManagerController {
 
     /**
      * 这里简化了
-     * @param session
+     * @param servletRequest
      * @param product
      * @return
      */
