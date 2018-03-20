@@ -46,8 +46,6 @@ public class UserController {
             // in cluster environment instead of using session, we use redis
             // C5121D30C35E1DAF31AC94024EE6E0CA
             CookieUtil.writeLoginToken(servletResponse, session.getId());
-            CookieUtil.readLoginToken(servletRequest);
-            CookieUtil.deleteLoginToken(servletRequest, servletResponse);
 
             RedisPoolUtil.setEx(session.getId(), Const.RedisCacheTime.REDIS_SESSION_TIME,
                     JsonUtil.obj2String(response.getData()));

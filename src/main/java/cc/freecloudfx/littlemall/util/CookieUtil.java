@@ -13,7 +13,7 @@ import javax.servlet.http.HttpServletResponse;
 @Slf4j
 public class CookieUtil {
 
-    private final static String COOKIE_DOMAIN = ".littlemall.com";
+    private final static String COOKIE_DOMAIN = "littlemall.com"; /* .littlemall.com 这个 . 在高版本 tomcat 会吃屎 */
     private final static String COOKIE_NAME = "little_login_token";
 
     public static void writeLoginToken(HttpServletResponse servletResponse, String token) {
@@ -21,6 +21,7 @@ public class CookieUtil {
         cookie.setDomain(COOKIE_DOMAIN);
         cookie.setPath("/");
         cookie.setMaxAge(60 * 60 * 24 * 365);
+        cookie.setHttpOnly(true); // 防止脚本攻击，禁止脚本访问 cookie
         /* -1 means forever, if don't set this, cookie won't write to disk
          instead it writes to memory, only available in current page */
         log.info("write cookie Name:{}, cookie value:{}",
