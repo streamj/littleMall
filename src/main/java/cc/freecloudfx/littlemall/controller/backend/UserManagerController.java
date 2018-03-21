@@ -6,7 +6,7 @@ import cc.freecloudfx.littlemall.pojo.User;
 import cc.freecloudfx.littlemall.service.IUserService;
 import cc.freecloudfx.littlemall.util.CookieUtil;
 import cc.freecloudfx.littlemall.util.JsonUtil;
-import cc.freecloudfx.littlemall.util.RedisPoolUtil;
+import cc.freecloudfx.littlemall.util.RedisShardedPoolUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -35,7 +35,7 @@ public class UserManagerController {
             User user = response.getData();
             if (user.getRole() == Const.Role.ROLE_ADMIN) {
                 CookieUtil.writeLoginToken(servletResponse, session.getId());
-                RedisPoolUtil.setEx(session.getId(), Const.RedisCacheTime.REDIS_SESSION_TIME,
+                RedisShardedPoolUtil.setEx(session.getId(), Const.RedisCacheTime.REDIS_SESSION_TIME,
                         JsonUtil.obj2String(response.getData()));
                 return response;
             } else {

@@ -4,7 +4,7 @@ import cc.freecloudfx.littlemall.common.Const;
 import cc.freecloudfx.littlemall.pojo.User;
 import cc.freecloudfx.littlemall.util.CookieUtil;
 import cc.freecloudfx.littlemall.util.JsonUtil;
-import cc.freecloudfx.littlemall.util.RedisPoolUtil;
+import cc.freecloudfx.littlemall.util.RedisShardedPoolUtil;
 import org.apache.commons.lang3.StringUtils;
 
 import javax.servlet.*;
@@ -27,11 +27,11 @@ public class SessionExpireFilter implements Filter {
         String loginTOken = CookieUtil.readLoginToken(httpServletRequest);
         if (StringUtils.isNotEmpty(loginTOken)) {
             /* 你倒是保持一致性啊，一会 not 的 */
-            String userJsonStr = RedisPoolUtil.get(loginTOken);
+            String userJsonStr = RedisShardedPoolUtil.get(loginTOken);
             User user = JsonUtil.string2Obj(userJsonStr, User.class);
             if (user != null) {
                 // 重置 session 时常
-                RedisPoolUtil.expire(loginTOken, Const.RedisCacheTime.REDIS_SESSION_TIME);
+                RedisShardedPoolUtil.expire(loginTOken, Const.RedisCacheTime.REDIS_SESSION_TIME);
             }
         }
         filterChain.doFilter(servletRequest, servletResponse);
