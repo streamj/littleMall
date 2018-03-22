@@ -11,9 +11,10 @@
 
     <!--这个文件是 Spring 主配置文件-->
     <!--这一行，是表示会扫描这个包下的注解，方便你注入-->
-    <context:component-scan base-package="cc.freecloudfx.littlemall" annotation-config="true"/>
+    <context:component-scan base-package="cc.freecloudfx.littlemall" annotation-config="true">
+        <context:exclude-filter type="annotation" expression="org.springframework.stereotype.Controller" />
+    </context:component-scan>
 
-    <!--<context:annotation-config/>-->
     <aop:aspectj-autoproxy/>
 
     <!--分离出的配置文件-->

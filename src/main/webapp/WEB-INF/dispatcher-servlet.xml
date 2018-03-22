@@ -8,7 +8,10 @@
 	http://www.springframework.org/schema/mvc
 	http://www.springframework.org/schema/mvc/spring-mvc.xsd">
 
-    <context:component-scan base-package="cc.freecloudfx.littlemall" annotation-config="true"/>
+    <!--默认扫描不扫了，只扫 Spring MVC-->
+    <context:component-scan base-package="cc.freecloudfx.littlemall.controller" annotation-config="true" use-default-filters="false">
+        <context:include-filter type="annotation" expression="org.springframework.stereotype.Controller"/>
+    </context:component-scan>
 
     <mvc:annotation-driven>
         <mvc:message-converters>
