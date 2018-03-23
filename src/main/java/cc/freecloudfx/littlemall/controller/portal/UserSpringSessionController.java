@@ -32,9 +32,6 @@ public class UserSpringSessionController {
     @ResponseBody() /*返回值自动使用 Jackson 序列化*/
     public ServerResponse<User> login(String username, String password,
                                       HttpSession session) {
-        // 模拟一个全局异常
-        int i = 0;
-        int j = 666/i;
 
         // service -> mybatis -> dao
         ServerResponse<User> response = iUserService.login(username, password);

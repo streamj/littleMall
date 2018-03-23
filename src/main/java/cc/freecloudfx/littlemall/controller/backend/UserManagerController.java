@@ -20,7 +20,7 @@ import javax.servlet.http.HttpSession;
  * @author StReaM on 2/27/2018
  */
 @Controller
-@RequestMapping("/manage/user/")
+@RequestMapping("/manage/user")
 public class UserManagerController {
 
     @Autowired
