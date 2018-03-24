@@ -163,11 +163,9 @@ public class ProductServiceImpl implements IProductService {
     }
 
     @Override
-    public ServerResponse<PageInfo> getProductByKeywordCategory(String keyword,
-                                                                Integer categoryId,
-                                                                int pageNum,
-                                                                int pageSize,
-                                                                String orderBy) {
+    public ServerResponse<PageInfo>
+    getProductByKeywordCategory(String keyword, Integer categoryId, int pageNum,
+                                int pageSize, String orderBy) {
         if (StringUtils.isBlank(keyword) && categoryId == null) {
             return ServerResponse.createByErrorCodeMessage(ResponseCode.ILLEGAL_ARGUMENT.getCode(),
                     ResponseCode.ILLEGAL_ARGUMENT.getDesc());
@@ -200,7 +198,7 @@ public class ProductServiceImpl implements IProductService {
             }
         }
         List<Product> productList = productMapper.selectByNameAndCategoryIds(
-                StringUtils.isBlank(keyword)? null:keyword, categoryIdList.size()> 0 ? categoryIdList:null);
+                StringUtils.isBlank(keyword) ? null : keyword, categoryIdList.size() > 0 ? categoryIdList : null);
         List<ProductListVo> productListVoList = Lists.newArrayList();
         for (Product product : productList) {
             ProductListVo productListVo = assembleProductListVo(product);
